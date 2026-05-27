@@ -1,0 +1,15 @@
+# .NET
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# Angular
+node_modules/
+dist/
+.angular/
+.npm/
