@@ -61,13 +61,6 @@ export class LoginComponent {
   onLogin() {
     this.loading = true;
     this.error = '';
-    // Mock login for demo if API is not running
-    if (this.username === 'admin' && this.password === 'Admin123') {
-        const mockUser = { userId: 1, username: 'admin', role: 'Admin', token: 'mock-jwt-token' };
-        localStorage.setItem('currentUser', JSON.stringify(mockUser));
-        window.location.reload(); // Quick way to refresh state
-        return;
-    }
 
     this.authService.login(this.username, this.password).subscribe({
       next: () => {
