@@ -1,9 +1,11 @@
+using HMS.Core.DTOs;
 using HMS.Core.Entities;
 using HMS.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HMS.API.Controllers
@@ -21,13 +23,23 @@ namespace HMS.API.Controllers
         }
 
         [HttpGet("appointment/{appointmentId}")]
-        public async Task<ActionResult<Prescription>> GetByAppointment(int appointmentId)
+        public async Task<ActionResult<PrescriptionDto>> GetByAppointment(int appointmentId)
         {
-            var prescription = await _context.Prescriptions
+            var p = await _context.Prescriptions
                 .FirstOrDefaultAsync(p => p.AppointmentId == appointmentId);
 
-            if (prescription == null) return NotFound();
-            return prescription;
+            if (p == null) return NotFound();
+
+            return new PrescriptionDto
+            {
+                Id = p.Id,
+                AppointmentId = p.AppointmentId,
+                Diagnosis = p.Diagnosis,
+                Medicines = p.Medicines,
+                DosageInstructions = p.DosageInstructions,
+                FollowUpDate = p.FollowUpDate,
+                CreatedAt = p.CreatedAt
+            };
         }
 
         [HttpPost]

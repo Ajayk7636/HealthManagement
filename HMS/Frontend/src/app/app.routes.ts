@@ -27,6 +27,23 @@ export const routes: Routes = [
                 path: 'patients',
                 canActivate: [AuthGuard],
                 loadChildren: () => import('./modules/patient/patient.routes').then(m => m.PATIENT_ROUTES)
+            },
+            {
+                path: 'doctors',
+                canActivate: [AuthGuard],
+                data: { roles: ['Admin'] },
+                loadChildren: () => import('./modules/doctor/doctor.routes').then(m => m.DOCTOR_ROUTES)
+            },
+            {
+                path: 'billing',
+                canActivate: [AuthGuard],
+                loadChildren: () => import('./modules/billing/billing.routes').then(m => m.BILLING_ROUTES)
+            },
+            {
+                path: 'reports',
+                canActivate: [AuthGuard],
+                data: { roles: ['Admin'] },
+                loadChildren: () => import('./modules/reports/reports.routes').then(m => m.REPORT_ROUTES)
             }
         ]
     },

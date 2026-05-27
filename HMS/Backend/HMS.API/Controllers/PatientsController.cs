@@ -1,9 +1,11 @@
+using HMS.Core.DTOs;
 using HMS.Core.Entities;
 using HMS.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HMS.API.Controllers
@@ -21,17 +23,43 @@ namespace HMS.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatients()
         {
-            return await _context.Patients.ToListAsync();
+            var patients = await _context.Patients.ToListAsync();
+            return patients.Select(p => new PatientDto
+            {
+                Id = p.Id,
+                UserId = p.UserId,
+                FullName = p.FullName,
+                Age = p.Age,
+                Gender = p.Gender,
+                BloodGroup = p.BloodGroup,
+                ContactNumber = p.ContactNumber,
+                EmergencyContact = p.EmergencyContact,
+                Address = p.Address,
+                MedicalNotes = p.MedicalNotes
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Patient>> GetPatient(int id)
+        public async Task<ActionResult<PatientDto>> GetPatient(int id)
         {
-            var patient = await _context.Patients.FindAsync(id);
-            if (patient == null) return NotFound();
-            return patient;
+            var p = await _context.Patients.FindAsync(id);
+            if (p == null) return NotFound();
+
+            return new PatientDto
+            {
+                Id = p.Id,
+                UserId = p.UserId,
+                FullName = p.FullName,
+                Age = p.Age,
+                Gender = p.Gender,
+                BloodGroup = p.BloodGroup,
+                ContactNumber = p.ContactNumber,
+                EmergencyContact = p.EmergencyContact,
+                Address = p.Address,
+                MedicalNotes = p.MedicalNotes
+            };
         }
 
         [HttpPost]
