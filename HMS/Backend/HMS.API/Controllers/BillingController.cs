@@ -1,9 +1,11 @@
+using HMS.Core.DTOs;
 using HMS.Core.Entities;
 using HMS.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HMS.API.Controllers
@@ -21,12 +23,25 @@ namespace HMS.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bill>>> GetBills()
+        public async Task<ActionResult<IEnumerable<BillDto>>> GetBills()
         {
-            return await _context.Bills
+            var bills = await _context.Bills
                 .Include(b => b.Appointment)
                 .ThenInclude(a => a.Patient)
                 .ToListAsync();
+
+            return bills.Select(b => new BillDto
+            {
+                Id = b.Id,
+                AppointmentId = b.AppointmentId,
+                PatientName = b.Appointment.Patient.FullName,
+                TotalAmount = b.TotalAmount,
+                TaxAmount = b.TaxAmount,
+                DiscountAmount = b.DiscountAmount,
+                PaymentStatus = b.PaymentStatus,
+                PaymentMethod = b.PaymentMethod,
+                BillDate = b.BillDate
+            }).ToList();
         }
 
         [HttpPost("generate/{appointmentId}")]

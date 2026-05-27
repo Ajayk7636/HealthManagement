@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PatientService } from '../../../../core/services/patient.service';
 
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="card shadow-sm">
       <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
@@ -35,7 +36,7 @@ import { PatientService } from '../../../../core/services/patient.service';
                 <td><span class="badge bg-danger">{{ p.bloodGroup }}</span></td>
                 <td>{{ p.contactNumber }}</td>
                 <td>
-                  <button class="btn btn-outline-info btn-sm me-1"><i class="bi bi-eye"></i></button>
+                  <button class="btn btn-outline-info btn-sm me-1" [routerLink]="['/patients/history', p.id]"><i class="bi bi-eye"></i></button>
                   <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
                 </td>
               </tr>

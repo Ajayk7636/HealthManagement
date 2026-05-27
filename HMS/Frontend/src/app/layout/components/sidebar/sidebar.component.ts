@@ -19,6 +19,9 @@ import { AuthService } from '../../../core/services/auth.service';
         <a *ngIf="userRole === 'Admin'" routerLink="/admin/users" routerLinkActive="active" class="list-group-item list-group-item-action list-group-item-light p-3">
           <i class="bi bi-people me-2"></i> User Management
         </a>
+        <a *ngIf="userRole === 'Admin'" routerLink="/doctors" routerLinkActive="active" class="list-group-item list-group-item-action list-group-item-light p-3">
+          <i class="bi bi-person-badge me-2"></i> Doctor Master
+        </a>
         <a *ngIf="['Admin', 'Receptionist'].includes(userRole)" routerLink="/patients" class="list-group-item list-group-item-action list-group-item-light p-3">
           <i class="bi bi-person-heart me-2"></i> Patient Management
         </a>
